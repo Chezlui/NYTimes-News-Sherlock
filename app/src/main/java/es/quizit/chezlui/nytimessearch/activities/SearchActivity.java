@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,6 +30,7 @@ import cz.msebera.android.httpclient.Header;
 import es.quizit.chezlui.nytimessearch.Article;
 import es.quizit.chezlui.nytimessearch.ArticleArrayAdapter;
 import es.quizit.chezlui.nytimessearch.R;
+import es.quizit.chezlui.nytimessearch.Utility;
 
 public class SearchActivity extends AppCompatActivity {
     @Bind (R.id.etQuery) EditText etQuery;
@@ -85,6 +87,12 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onArticleSearch(View view) {
+        if(!Utility.isOnline()) {
+            Toast.makeText(this, "Check your internet connection", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        articleAdapter.clear();
         String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
