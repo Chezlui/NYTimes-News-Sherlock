@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,11 +32,15 @@ import es.quizit.chezlui.nytimessearch.ArticleArrayAdapter;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
 import es.quizit.chezlui.nytimessearch.models.Article;
+import es.quizit.chezlui.nytimessearch.models.Filter;
 
 public class SearchActivity extends AppCompatActivity {
-    @Bind (R.id.etQuery) EditText etQuery;
-    @Bind (R.id.btnSearch) Button btnSearch;
-    @Bind (R.id.gvResults) GridView gvResults;
+    @Bind(R.id.etQuery)
+    EditText etQuery;
+    @Bind(R.id.btnSearch)
+    Button btnSearch;
+    @Bind(R.id.gvResults)
+    GridView gvResults;
 
     ArrayList<Article> articles;
     ArticleArrayAdapter articleAdapter;
@@ -84,20 +89,16 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onArticleSearch(View view) {
-        if(!Utility.isOnline()) {
+        if (!Utility.isOnline()) {
             Toast.makeText(this, "Check your internet connection", Toast.LENGTH_LONG).show();
             return;
         }
 
         articleAdapter.clear();
-        String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
-        RequestParams params = new RequestParams();
-        params.put("api-key", "08e74226222237c1d9dd21876df2f25b:2:74376421");
-        params.put("page", 0);
-        params.put("q", query);
-
+        RequestParams params = getUrlParams();
+        Log.d("URL", url + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -112,6 +113,13 @@ public class SearchActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.d("JSONError", errorResponse.toString());
+                Toast.makeText(getBaseContext(), "Try another search", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -120,5 +128,36 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private RequestParams getUrlParams() {
+        RequestParams params = new RequestParams();
 
+        String query = etQuery.getText().toString();
+
+        params.put("api-key", "08e74226222237c1d9dd21876df2f25b:2:74376421");
+        params.put("page", 0);
+        params.put("q", query);
+
+        Filter filter = Filter.getFilters(this);
+        Iterator<String> it = filter.getDeskValues().iterator();
+
+        String news_desk;
+        if (it.hasNext()) {
+            news_desk = "news_desk:(";
+            while (it.hasNext()) {
+                news_desk += "\"" + it.next() + "\" ";
+            }
+            news_desk += ")";
+            params.put("fq", news_desk);
+        }
+
+        if (filter.getBeginDate() != "") {
+            params.put("begin_date", filter.getBeginDate());
+        }
+
+        if (filter.getSortOrder() != "") {
+            params.put("sort", filter.getSortOrder());
+        }
+
+        return params;
+    }
 }
