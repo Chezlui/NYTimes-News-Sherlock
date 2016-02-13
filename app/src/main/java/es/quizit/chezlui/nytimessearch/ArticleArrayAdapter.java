@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import es.quizit.chezlui.nytimessearch.models.Article;
+
 /**
  * Created by chezlui on 11/02/16.
  */

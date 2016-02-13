@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import es.quizit.chezlui.nytimessearch.Article;
+import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.R;
 
 public class ArticleActivity extends AppCompatActivity {

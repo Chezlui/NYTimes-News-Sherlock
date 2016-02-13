@@ -4,4 +4,11 @@
     <string name="hint">Enter search query</string>
     <string name="search">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="title_activity_filter">FilterActivity</string>
+    <string name="filter_icon_title">Filter your search</string>
+
+    <string-array name="sort_order_options">
+        <item>Oldest</item>
+        <item>Newer</item>
+    </string-array>
 </resources>

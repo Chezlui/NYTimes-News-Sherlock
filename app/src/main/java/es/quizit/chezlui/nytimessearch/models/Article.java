@@ -1,4 +1,4 @@
-package es.quizit.chezlui.nytimessearch;
+package es.quizit.chezlui.nytimessearch.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;

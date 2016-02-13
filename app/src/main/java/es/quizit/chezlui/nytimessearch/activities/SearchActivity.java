@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
-import es.quizit.chezlui.nytimessearch.Article;
 import es.quizit.chezlui.nytimessearch.ArticleArrayAdapter;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
+import es.quizit.chezlui.nytimessearch.models.Article;
 
 public class SearchActivity extends AppCompatActivity {
     @Bind (R.id.etQuery) EditText etQuery;
@@ -73,13 +73,10 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_filter_search) {
+            showFilgerDialog();
             return true;
         }
 
@@ -117,5 +114,11 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showFilgerDialog() {
+        Intent intent = new Intent(this, FilterActivity.class);
+        startActivity(intent);
+    }
+
 
 }
