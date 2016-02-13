@@ -2,15 +2,16 @@ package es.quizit.chezlui.nytimessearch.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -36,15 +37,13 @@ import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
 public class SearchActivity extends AppCompatActivity {
-    @Bind(R.id.etQuery)
-    EditText etQuery;
-    @Bind(R.id.btnSearch)
-    Button btnSearch;
     @Bind(R.id.gvResults)
     GridView gvResults;
 
     ArrayList<Article> articles;
     ArticleArrayAdapter articleAdapter;
+
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +81,31 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SearchActivity.this.query = query;
+
+                // perform query here
+                onArticleSearch(searchView);
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -125,6 +146,9 @@ public class SearchActivity extends AppCompatActivity {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
                     articleAdapter.addAll(Article.fromJsonArray(articleJsonResults));
+                    if(articleAdapter.isEmpty()) {
+                        Toast.makeText(SearchActivity.this, "try another search", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -146,8 +170,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private RequestParams getUrlParams(int page) {
         RequestParams params = new RequestParams();
-
-        String query = etQuery.getText().toString();
 
         params.put("api-key", "08e74226222237c1d9dd21876df2f25b:2:74376421");
         params.put("page", 0);
