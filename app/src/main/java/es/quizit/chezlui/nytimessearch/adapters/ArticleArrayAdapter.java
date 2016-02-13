@@ -1,4 +1,4 @@
-package es.quizit.chezlui.nytimessearch;
+package es.quizit.chezlui.nytimessearch.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.models.Article;
 
 /**

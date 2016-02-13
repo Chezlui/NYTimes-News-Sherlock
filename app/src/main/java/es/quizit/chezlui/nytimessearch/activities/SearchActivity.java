@@ -28,9 +28,10 @@ import java.util.Iterator;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
-import es.quizit.chezlui.nytimessearch.ArticleArrayAdapter;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
+import es.quizit.chezlui.nytimessearch.adapters.ArticleArrayAdapter;
+import es.quizit.chezlui.nytimessearch.adapters.EndlessScrollListener;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
@@ -54,6 +55,16 @@ public class SearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         articles = new ArrayList<>();
         articleAdapter = new ArticleArrayAdapter(this, articles);
+
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                loadData(page);
+                return true;
+            }
+        });
+
+
         gvResults.setAdapter(articleAdapter);
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,10 +106,15 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         articleAdapter.clear();
-        AsyncHttpClient client = new AsyncHttpClient();
+        int page = 0;
+        loadData(page);
+    }
+
+    private void loadData(int page) {
         String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
-        RequestParams params = getUrlParams();
+        RequestParams params = getUrlParams(page);
         Log.d("URL", url + params.toString());
+        AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -128,7 +144,7 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private RequestParams getUrlParams() {
+    private RequestParams getUrlParams(int page) {
         RequestParams params = new RequestParams();
 
         String query = etQuery.getText().toString();
@@ -156,6 +172,10 @@ public class SearchActivity extends AppCompatActivity {
 
         if (filter.getSortOrder() != "") {
             params.put("sort", filter.getSortOrder());
+        }
+
+        if (page > 0) {
+            params.put("page", page);
         }
 
         return params;
