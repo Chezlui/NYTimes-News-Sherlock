@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +32,7 @@ import cz.msebera.android.httpclient.Header;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
 import es.quizit.chezlui.nytimessearch.adapters.ArticleRecyclerAdapter;
+import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListener;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
@@ -53,14 +54,6 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         articleAdapter = new ArticleRecyclerAdapter(this, articles);
 
-//        rvResults.(new EndlessScrollListener() {
-//            @Override
-//            public boolean onLoadMore(int page, int totalItemsCount) {
-//                loadData(page);
-//                return true;
-//            }
-//        });
-
 
         rvResults.setAdapter(articleAdapter);
 //        rvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,7 +68,14 @@ public class SearchActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-        rvResults.setLayoutManager(new LinearLayoutManager(this));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        rvResults.setLayoutManager(gridLayoutManager);
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadData(page);
+            }
+        });
     }
 
     @Override
@@ -146,7 +146,9 @@ public class SearchActivity extends AppCompatActivity {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
                     articles.addAll(Article.fromJsonArray(articleJsonResults));
-                    articleAdapter.notifyDataSetChanged();
+
+                    int currentAdapterSize = articleAdapter.getItemCount();
+                    articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.size() - currentAdapterSize);
                     if(articles.size() == 0) {
                         Toast.makeText(SearchActivity.this, "try another search", Toast.LENGTH_SHORT).show();
                     }
