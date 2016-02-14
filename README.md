@@ -2,7 +2,7 @@
 
 **NYTimes News Sherlock** is an android app that allows a user to search for news on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **9.5** hours spent in total
+Time spent: **13.5** hours spent in total
 
 ## User Stories
 
@@ -45,14 +45,10 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-
-There is not walkthrough of implemented user stories yet.
-
-
 ## Notes
 For recording all the filters I have opted for using SharedPreferences, that way is no need to be passing trough intents back and forward, and at the end of the day you need to saved them in some way, so this serves for both purposes.
 
-For updating the FilterDialog with the date choosed by the user in DatePickerDialog I followed the next strategy. In first place, the filter dialog it register itself as a Shared Preferences listener. In second place I created a new MyDatePickerDialog that extended from DatePickerDialog and overrided onDateChanged, so each time it was called I write the date in SharedPreferences. That way the Filter Dialog was called and then I could update the EditText where the date choosed was represented.
+For updating the FilterDialog with the date choosed by the user in DatePickerDialog I followed the next strategy. In first place, the filter dialog it registers itself as a Shared Preferences listener. In second place I created a new MyDatePickerDialog that extended from DatePickerDialog and overrided onDateChanged, so each time it was called I write the date in SharedPreferences. That way the Filter Dialog was called and then I could update the EditText where the date choosed was represented.
 
 
 ## Open-source libraries used

@@ -1,10 +1,11 @@
 package es.quizit.chezlui.nytimessearch.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,17 +31,15 @@ import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
-import es.quizit.chezlui.nytimessearch.adapters.ArticleArrayAdapter;
-import es.quizit.chezlui.nytimessearch.adapters.EndlessScrollListener;
+import es.quizit.chezlui.nytimessearch.adapters.ArticleRecyclerAdapter;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
 public class SearchActivity extends AppCompatActivity {
-    @Bind(R.id.gvResults)
-    GridView gvResults;
+    @Bind(R.id.rvResults) RecyclerView rvResults;
 
     ArrayList<Article> articles;
-    ArticleArrayAdapter articleAdapter;
+    ArticleRecyclerAdapter articleAdapter;
 
     String query;
 
@@ -54,30 +51,31 @@ public class SearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         articles = new ArrayList<>();
-        articleAdapter = new ArticleArrayAdapter(this, articles);
+        articleAdapter = new ArticleRecyclerAdapter(this, articles);
 
-        gvResults.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-                loadData(page);
-                return true;
-            }
-        });
+//        rvResults.(new EndlessScrollListener() {
+//            @Override
+//            public boolean onLoadMore(int page, int totalItemsCount) {
+//                loadData(page);
+//                return true;
+//            }
+//        });
 
 
-        gvResults.setAdapter(articleAdapter);
-        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-
-                Article article = articles.get(position);
-
-                intent.putExtra("article", article);
-
-                startActivity(intent);
-            }
-        });
+        rvResults.setAdapter(articleAdapter);
+//        rvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
+//
+//                Article article = articles.get(position);
+//
+//                intent.putExtra("article", article);
+//
+//                startActivity(intent);
+//            }
+//        });
+        rvResults.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -127,7 +125,8 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
-        articleAdapter.clear();
+        articles.clear();
+        articleAdapter.notifyDataSetChanged();
         int page = 0;
         loadData(page);
     }
@@ -146,8 +145,9 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
-                    articleAdapter.addAll(Article.fromJsonArray(articleJsonResults));
-                    if(articleAdapter.isEmpty()) {
+                    articles.addAll(Article.fromJsonArray(articleJsonResults));
+                    articleAdapter.notifyDataSetChanged();
+                    if(articles.size() == 0) {
                         Toast.makeText(SearchActivity.this, "try another search", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
