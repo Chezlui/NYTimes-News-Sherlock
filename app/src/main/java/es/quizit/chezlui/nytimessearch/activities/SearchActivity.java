@@ -1,5 +1,6 @@
 package es.quizit.chezlui.nytimessearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -33,6 +34,7 @@ import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
 import es.quizit.chezlui.nytimessearch.adapters.ArticleRecyclerAdapter;
 import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListener;
+import es.quizit.chezlui.nytimessearch.adapters.ItemClickSupport;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
@@ -56,18 +58,18 @@ public class SearchActivity extends AppCompatActivity {
 
 
         rvResults.setAdapter(articleAdapter);
-//        rvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-//
-//                Article article = articles.get(position);
-//
-//                intent.putExtra("article", article);
-//
-//                startActivity(intent);
-//            }
-//        });
+
+        ItemClickSupport.addTo(rvResults).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
+                        Article article = articles.get(position);
+                        intent.putExtra("article", article);
+                        startActivity(intent);
+                    }
+                }
+        );
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         rvResults.setLayoutManager(gridLayoutManager);
         rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
