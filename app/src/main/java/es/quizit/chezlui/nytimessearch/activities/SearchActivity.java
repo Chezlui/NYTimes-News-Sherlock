@@ -2,6 +2,7 @@ package es.quizit.chezlui.nytimessearch.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -164,8 +165,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void showFilgerDialog() {
-        Intent intent = new Intent(this, FilterActivity.class);
-        startActivity(intent);
+        FragmentManager fm = getSupportFragmentManager();
+        FilterDialog filterDialog = FilterDialog.newInstance();
+        filterDialog.show(fm, "Filter your search");
     }
 
     private RequestParams getUrlParams(int page) {

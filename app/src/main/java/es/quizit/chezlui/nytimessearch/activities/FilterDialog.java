@@ -1,17 +1,16 @@
 package es.quizit.chezlui.nytimessearch.activities;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -24,7 +23,7 @@ import es.quizit.chezlui.nytimessearch.R;
 /**
  * Created by chezlui on 12/02/16.
  */
-public class FilterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class FilterDialog extends DialogFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Bind(R.id.etDatePicker) EditText etDatePicker;
     @Bind(R.id.spnSortOrder) Spinner spnSortOrder;
     @Bind(R.id.cbArts) CheckBox cbArts;
@@ -33,50 +32,51 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
     // TODO Delete all filters with an action button
 
+    public FilterDialog() {
+
+    }
+
+    public static FilterDialog newInstance() {
+        FilterDialog filterDialog = new FilterDialog();
+        return filterDialog;
+    }
+
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter);
-        ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.dialog_filter, container);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getDialog().setTitle(R.string.title_activity_filter);
+        ButterKnife.bind(this, view);
         drawFilters();
         setListeners();
     }
 
     private void showDatePicker() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+        // Use the current time as the default values for the picker
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // Create a new instance of TimePickerDialog and return it
+        MyDatePickerDialog myDatePickerDialog =  new MyDatePickerDialog(getActivity(), null, year, month, day);
+        myDatePickerDialog.show();
     }
 
+    /** Detect if a sharedPreferences has been changed and if it is date, go ahead an update the editText */
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        etDatePicker.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("begin_date", etDatePicker.getText().toString()).apply();
-    }
-
-
-    public static class DatePickerFragment extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Activity needs to implement this interface
-            DatePickerDialog.OnDateSetListener listener = (DatePickerDialog.OnDateSetListener) getActivity();
-
-            // Create a new instance of TimePickerDialog and return it
-            return new DatePickerDialog(getActivity(), listener, year, month, day);
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        if (TextUtils.equals(key, "begin_date")) {
+            etDatePicker.setText(sp.getString("begin_date", ""));
         }
     }
 
     private void drawFilters() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         etDatePicker.setText(sp.getString("begin_date", ""));
         spnSortOrder.setSelection(sp.getInt("sort_order", 1));
         cbArts.setChecked(sp.getBoolean("arts", false));
@@ -132,5 +132,9 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                 sp.edit().putBoolean("sports", checkBox.isChecked()).apply();
             }
         });
+
+        // Set a listener for sharedPreferences
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.registerOnSharedPreferenceChangeListener(this);
     }
 }

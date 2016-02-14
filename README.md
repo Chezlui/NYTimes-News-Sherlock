@@ -23,7 +23,7 @@ The following **optional** features are implemented:
 * [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
 * [x] Used the **ActionBar SearchView** or custom layout as the query box instead of an EditText
 * [x] User can **share an article link** to their friends or email it to themselves
-* [ ] Replaced Filter Settings Activity with a lightweight modal overlay
+* [x] Replaced Filter Settings Activity with a lightweight modal overlay
 * [ ] Improved the user interface and experiment with image assets and/or styling and coloring
 
 The following **bonus** features are implemented:
@@ -33,6 +33,7 @@ The following **bonus** features are implemented:
 * [x] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data.
 * [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
+* [ ] Use Parcelable instead of Serializable using the popular Parceler library. 
 
 The following **additional** features are implemented:
 
@@ -41,6 +42,10 @@ The following **additional** features are implemented:
 There is not walkthrough of implemented user stories yet.
 
 ## Notes
+For recording all the filters I have opted for using SharedPreferences, that way is no need to be passing trough intents back and forward, and at the end of the day you need to saved them in some way, so this serves for both purposes.
+
+For updating the FilterDialog with the date choosed by the user in DatePickerDialog I followed the next strategy. In first place, the filter dialog it register itself as a Shared Preferences listener. In second place I created a new MyDatePickerDialog that extended from DatePickerDialog and overrided onDateChanged, so each time it was called I write the date in SharedPreferences. That way the Filter Dialog was called and then I could update the EditText where the date choosed was represented.
+
 
 ## Open-source libraries used
 
