@@ -39,7 +39,15 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
+Here's a walkthrough of implemented user stories:
+
+<img src='https://s3-eu-west-1.amazonaws.com/chezlui.freelancer/codepath/NYTimesSherlock.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+
 There is not walkthrough of implemented user stories yet.
+
 
 ## Notes
 For recording all the filters I have opted for using SharedPreferences, that way is no need to be passing trough intents back and forward, and at the end of the day you need to saved them in some way, so this serves for both purposes.
