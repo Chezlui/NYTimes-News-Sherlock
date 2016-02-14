@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 
         String thumbNail = article.getThumbnail();
         if (!TextUtils.isEmpty(thumbNail)) {
-            Picasso.with(getContext()).load(thumbNail).into(imageView);
+            Glide.with(getContext()).load(thumbNail).into(imageView);
         }
 
         return convertView;
