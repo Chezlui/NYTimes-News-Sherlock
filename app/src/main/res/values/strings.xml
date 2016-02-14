@@ -6,6 +6,7 @@
     <string name="title_activity_article">Article</string>
     <string name="title_activity_filter">Filter your search</string>
     <string name="filter_icon_title">Filter your search</string>
+    <string name="share_article_action">Share this article</string>
 
     <string-array name="sort_order_options">
         <item>Oldest</item>
