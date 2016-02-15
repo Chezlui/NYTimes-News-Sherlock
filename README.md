@@ -2,7 +2,7 @@
 
 **NYTimes News Sherlock** is an android app that allows a user to search for news on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **13.5** hours spent in total
+Time spent: **16.5** hours spent in total
 
 ## User Stories
 
@@ -28,8 +28,8 @@ The following **optional** features are implemented:
 
 The following **bonus** features are implemented:
 
-* [ ] Use the [RecyclerView](http://guides.codepath.com/android/Using-the-RecyclerView) with the `StaggeredGridLayoutManager` to display improve the grid of image results
-* [ ] For different news articles that only have text or only have images, use [Heterogenous Layouts](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) with RecyclerView
+* [x] Use the [RecyclerView](http://guides.codepath.com/android/Using-the-RecyclerView) with the `StaggeredGridLayoutManager` to display improve the grid of image results
+* [x] For different news articles that only have text or only have images, use [Heterogenous Layouts](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) with RecyclerView
 * [x] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data.
 * [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
@@ -50,7 +50,9 @@ For recording all the filters I have opted for using SharedPreferences, that way
 
 For updating the FilterDialog with the date choosed by the user in DatePickerDialog I followed the next strategy. In first place, the filter dialog it registers itself as a Shared Preferences listener. In second place I created a new MyDatePickerDialog that extended from DatePickerDialog and overrided onDateChanged, so each time it was called I write the date in SharedPreferences. That way the Filter Dialog was called and then I could update the EditText where the date choosed was represented.
 
+Staggered grid list was pretty straightforward. I thought of different strategies to implement the getItemViewType method. At the end the easier was just check if thumbnail was filled with an URL or not.
 
+For the ItemDecorator I have to tune it a little since the code in Github was for a one column case.
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
