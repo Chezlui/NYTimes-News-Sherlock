@@ -16,19 +16,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.quizit.chezlui.nytimessearch.R;
-import es.quizit.chezlui.nytimessearch.models.Article;
+import es.quizit.chezlui.nytimessearch.models.ArticleGSON;
 
 /**
  * Created by chezlui on 14/02/16.
  */
 public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Article> mArticles;
+    private List<ArticleGSON> mArticles;
     private Context mContext;
 
     private final int IMAGE = 0;
     private final int TEXT = 1;
 
-    public ArticleRecyclerAdapter(Context context, List<Article> articles) {
+    public ArticleRecyclerAdapter(Context context, List<ArticleGSON> articles) {
         this.mContext = context;
         this.mArticles = articles;
     }
@@ -65,7 +65,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Article article;
+        ArticleGSON article;
         switch (holder.getItemViewType()) {
             case IMAGE:
                 article = mArticles.get(position);
@@ -100,7 +100,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        Article article = mArticles.get(position);
+        ArticleGSON article = mArticles.get(position);
         if (TextUtils.equals(article.getThumbnail(), "")) {
             return TEXT;
         } else {

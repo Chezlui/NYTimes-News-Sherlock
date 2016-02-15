@@ -15,7 +15,7 @@ import android.webkit.WebViewClient;
 import org.parceler.Parcels;
 
 import es.quizit.chezlui.nytimessearch.R;
-import es.quizit.chezlui.nytimessearch.models.Article;
+import es.quizit.chezlui.nytimessearch.models.ArticleGSON;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class ArticleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Article article = (Article) Parcels.unwrap(getIntent().getParcelableExtra("article"));
+        ArticleGSON article = (ArticleGSON) Parcels.unwrap(getIntent().getParcelableExtra("article"));
         WebView webView = (WebView) findViewById(R.id.wvArticle);
         webView.setWebViewClient(new WebViewClient() {
             @Override

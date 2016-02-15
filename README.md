@@ -62,6 +62,8 @@ For the ItemDecorator I have to tune it a little since the code in Github was fo
 - [Butterknife](https://github.com/JakeWharton/butterknife) - View "injection" library for Android
 - [Glide](https://github.com/bumptech/glide) - An image loading and caching library for Android focused on smooth scrolling
 - [RecyclerView - Animators](https://github.com/wasabeef/recyclerview-animators) - An Android Animation library which easily add itemanimator to RecyclerView items
+- [GSON]
+
 
 ## License
 
