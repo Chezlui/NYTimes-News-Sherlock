@@ -59,6 +59,7 @@ For the ItemDecorator I have to tune it a little since the code in Github was fo
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 - [Butterknife](https://github.com/JakeWharton/butterknife) - View "injection" library for Android
 - [Glide](https://github.com/bumptech/glide) - An image loading and caching library for Android focused on smooth scrolling
+- [GSON]
 
 ## License
 

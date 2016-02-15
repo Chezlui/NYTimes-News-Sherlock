@@ -14,19 +14,19 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import es.quizit.chezlui.nytimessearch.R;
-import es.quizit.chezlui.nytimessearch.models.Article;
+import es.quizit.chezlui.nytimessearch.models.ArticleGSON;
 
 /**
  * Created by chezlui on 11/02/16.
  */
-public class ArticleArrayAdapter extends ArrayAdapter<Article> {
-    public ArticleArrayAdapter(Context context, List<Article> articles) {
+public class ArticleArrayAdapter extends ArrayAdapter<ArticleGSON> {
+    public ArticleArrayAdapter(Context context, List<ArticleGSON> articles) {
         super(context, android.R.layout.simple_list_item_1, articles);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Article article = getItem(position);
+        ArticleGSON article = getItem(position);
 
         if(convertView == null)  {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());

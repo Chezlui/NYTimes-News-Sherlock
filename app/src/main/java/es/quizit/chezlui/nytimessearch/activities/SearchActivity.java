@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -25,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import butterknife.Bind;
@@ -37,15 +38,18 @@ import es.quizit.chezlui.nytimessearch.adapters.ArticleRecyclerAdapter;
 import es.quizit.chezlui.nytimessearch.adapters.DividerItemDecoration;
 import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListener;
 import es.quizit.chezlui.nytimessearch.adapters.ItemClickSupport;
-import es.quizit.chezlui.nytimessearch.models.Article;
+import es.quizit.chezlui.nytimessearch.models.ArticleGSON;
+import es.quizit.chezlui.nytimessearch.models.ArticlesList;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
 // TODO add animation to RecyclerView
 // TODO Add place holder
+// TODO Hide toolbar on scroll?
+// TODO si me aburro onSwipeRefreshListener
 public class SearchActivity extends AppCompatActivity {
     @Bind(R.id.rvResults) RecyclerView rvResults;
 
-    ArrayList<Article> articles;
+    ArticlesList articles;
     ArticleRecyclerAdapter articleAdapter;
 
     String query;
@@ -57,8 +61,7 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
-        articles = new ArrayList<>();
-        articleAdapter = new ArticleRecyclerAdapter(this, articles);
+        articleAdapter = new ArticleRecyclerAdapter(this, articles.articlesList);
 
 
         rvResults.setAdapter(articleAdapter);
@@ -70,7 +73,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-                        Article article = articles.get(position);
+                        ArticleGSON article = articles.articlesList.get(position);
                         intent.putExtra("article", Parcels.wrap(article));
                         startActivity(intent);
                     }
@@ -134,7 +137,7 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
-        articles.clear();
+        articles.articlesList.clear();
         articleAdapter.notifyDataSetChanged();
         int page = 0;
         loadData(page);
@@ -154,7 +157,9 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
-                    articles.addAll(Article.fromJsonArray(articleJsonResults));
+                    Gson gson = new GsonBuilder().create();
+                    articles = gson.fromJson(articleJsonResults.toString(), ArticlesList.class);
+//                    articles.addAll(ArticleGSON.fromJsonArray(articleJsonResults));
 
                     int currentAdapterSize = articleAdapter.getItemCount();
                     articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.size() - currentAdapterSize);
