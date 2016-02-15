@@ -2,7 +2,7 @@
 
 **NYTimes News Sherlock** is an android app that allows a user to search for news on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **19.5** hours spent in total
+Time spent: **20.5** hours spent in total
 
 ## User Stories
 
@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://s3-eu-west-1.amazonaws.com/chezlui.freelancer/codepath/NYTimesSherlock.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://s3-eu-west-1.amazonaws.com/chezlui.freelancer/codepath/NYTimesSherlock_finally.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

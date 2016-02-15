@@ -21,5 +21,6 @@
         android:maxLines="3"
         android:textSize="12sp"
         android:ellipsize="end"
+        android:textColor="@color/text"
         tools:text="My Title"/>
 </LinearLayout>
