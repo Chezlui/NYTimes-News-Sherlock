@@ -29,7 +29,11 @@ public class ArticleGSON {
     }
 
     public String getThumbnail() {
-        return multimedia.get(0).url;
+        if (multimedia.size() > 0) {
+            return ("http://www.nytimes.com/" +  multimedia.get(0).url);
+        } else {
+            return "";
+        }
     }
 
 

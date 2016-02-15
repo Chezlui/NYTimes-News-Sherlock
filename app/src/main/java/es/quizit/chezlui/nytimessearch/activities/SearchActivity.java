@@ -161,13 +161,17 @@ public class SearchActivity extends AppCompatActivity {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
 
+                    int currentAdapterSize = articleAdapter.getItemCount();
+
                     Type collectionType = new TypeToken<List<ArticleGSON>>(){}.getType();
                     Gson gson = new GsonBuilder().create();
-                    articles = gson.fromJson(articleJsonResults.toString(), collectionType);
+
+                    articles.addAll(
+                            (ArrayList<ArticleGSON>)gson.fromJson(articleJsonResults.toString(), collectionType));
 //                  articles.addAll(ArticleGSON.fromJsonArray(articleJsonResults));
 
 
-                    int currentAdapterSize = articleAdapter.getItemCount();
+
                     articleAdapter.notifyDataSetChanged();
                     //articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.articlesList.size() - currentAdapterSize);
                     if(articles.size() == 0) {
