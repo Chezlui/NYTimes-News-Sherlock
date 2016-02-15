@@ -39,6 +39,7 @@ import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListene
 import es.quizit.chezlui.nytimessearch.adapters.ItemClickSupport;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
+import jp.wasabeef.recyclerview.animators.FlipInBottomXAnimator;
 
 // TODO add animation to RecyclerView
 // TODO Add place holder
@@ -64,6 +65,7 @@ public class SearchActivity extends AppCompatActivity {
         rvResults.setAdapter(articleAdapter);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         rvResults.addItemDecoration(itemDecoration);
+        rvResults.setItemAnimator(new FlipInBottomXAnimator());
 
         ItemClickSupport.addTo(rvResults).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {

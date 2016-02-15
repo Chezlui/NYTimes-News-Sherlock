@@ -30,8 +30,6 @@ public class FilterDialog extends DialogFragment implements SharedPreferences.On
     @Bind(R.id.cbFashionStyle) CheckBox cbFashionStyle;
     @Bind(R.id.cbSports) CheckBox cbSports;
 
-    // TODO Delete all filters with an action button
-
     public FilterDialog() {
 
     }

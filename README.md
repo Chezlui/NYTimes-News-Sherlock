@@ -37,6 +37,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
+* [x] Added a flip animation to the elements of RecyclerView for better aspect.
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
@@ -59,6 +61,7 @@ For the ItemDecorator I have to tune it a little since the code in Github was fo
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 - [Butterknife](https://github.com/JakeWharton/butterknife) - View "injection" library for Android
 - [Glide](https://github.com/bumptech/glide) - An image loading and caching library for Android focused on smooth scrolling
+- [RecyclerView - Animators](https://github.com/wasabeef/recyclerview-animators) - An Android Animation library which easily add itemanimator to RecyclerView items
 
 ## License
 
