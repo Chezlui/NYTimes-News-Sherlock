@@ -23,6 +23,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -70,7 +71,7 @@ public class SearchActivity extends AppCompatActivity {
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
                         Article article = articles.get(position);
-                        intent.putExtra("article", article);
+                        intent.putExtra("article", Parcels.wrap(article));
                         startActivity(intent);
                     }
                 }

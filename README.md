@@ -33,7 +33,7 @@ The following **bonus** features are implemented:
 * [x] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data.
 * [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
-* [ ] Use Parcelable instead of Serializable using the popular Parceler library. 
+* [x] Use Parcelable instead of Serializable using the popular Parceler library. 
 
 The following **additional** features are implemented:
 

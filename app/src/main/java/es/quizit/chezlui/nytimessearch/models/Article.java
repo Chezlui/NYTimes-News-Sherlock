@@ -3,17 +3,18 @@ package es.quizit.chezlui.nytimessearch.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by chezlui on 11/02/16.
  */
-public class Article implements Serializable {
-    String webUrl;
-    String headLine;
-    String thumbnail;
+@Parcel
+public class Article {
+    public String webUrl;
+    public String headLine;
+    public String thumbnail;
 
     public String getWebUrl() {
         return webUrl;
@@ -26,6 +27,9 @@ public class Article implements Serializable {
     public String getThumbnail() {
         return thumbnail;
     }
+
+    // This empty constructor is for the Parcel library
+    public Article() {}
 
     public Article(JSONObject jsonObject) {
         try {
