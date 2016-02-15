@@ -44,6 +44,7 @@ import jp.wasabeef.recyclerview.animators.FlipInBottomXAnimator;
 // TODO add animation to RecyclerView
 // TODO Add place holder
 public class SearchActivity extends AppCompatActivity {
+    public static final int COLUMNS_NUMBER = 3;
     @Bind(R.id.rvResults) RecyclerView rvResults;
 
     ArrayList<Article> articles;
@@ -79,7 +80,8 @@ public class SearchActivity extends AppCompatActivity {
                 }
         );
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                COLUMNS_NUMBER, StaggeredGridLayoutManager.VERTICAL);
         rvResults.setLayoutManager(staggeredGridLayoutManager);
         rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(staggeredGridLayoutManager) {
             @Override

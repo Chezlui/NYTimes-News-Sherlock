@@ -42,8 +42,8 @@ public class Article {
 
             JSONArray multimedia = jsonObject.has("multimedia") ? jsonObject.getJSONArray("multimedia") : null;
             if(multimedia != null && multimedia.length() > 0) {
-                this.thumbnail = multimedia.getJSONObject(0).has("url") ?
-                        "http://www.nytimes.com/" + multimedia.getJSONObject(0).getString("url")
+                this.thumbnail = multimedia.getJSONObject(1).has("url") ?
+                        "http://www.nytimes.com/" + multimedia.getJSONObject(1).getString("url")
                         : "";
             } else {
                 this.thumbnail = "";

@@ -75,7 +75,8 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 String thumbNail = article.getThumbnail();
                 if (!TextUtils.isEmpty(thumbNail)) {
-                    Glide.with(mContext).load(thumbNail).into(((ViewHolderImage) holder).ivImage);
+                    Glide.with(mContext).load(thumbNail).
+                            into(((ViewHolderImage) holder).ivImage);
                 }
                 break;
             case TEXT:
