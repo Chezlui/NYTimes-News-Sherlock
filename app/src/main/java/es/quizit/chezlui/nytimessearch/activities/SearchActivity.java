@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -27,7 +28,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +43,6 @@ import es.quizit.chezlui.nytimessearch.adapters.DividerItemDecoration;
 import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListener;
 import es.quizit.chezlui.nytimessearch.adapters.ItemClickSupport;
 import es.quizit.chezlui.nytimessearch.models.ArticleGSON;
-import es.quizit.chezlui.nytimessearch.models.ArticlesList;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
 // TODO add animation to RecyclerView
@@ -49,7 +52,7 @@ import es.quizit.chezlui.nytimessearch.models.Filter;
 public class SearchActivity extends AppCompatActivity {
     @Bind(R.id.rvResults) RecyclerView rvResults;
 
-    ArticlesList articles;
+    List<ArticleGSON> articles = new ArrayList<>();
     ArticleRecyclerAdapter articleAdapter;
 
     String query;
@@ -61,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
-        articleAdapter = new ArticleRecyclerAdapter(this, articles.articlesList);
+        articleAdapter = new ArticleRecyclerAdapter(this, articles);
 
 
         rvResults.setAdapter(articleAdapter);
@@ -73,7 +76,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-                        ArticleGSON article = articles.articlesList.get(position);
+                        ArticleGSON article = articles.get(position);
                         intent.putExtra("article", Parcels.wrap(article));
                         startActivity(intent);
                     }
@@ -137,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
-        articles.articlesList.clear();
+        articles.clear();
         articleAdapter.notifyDataSetChanged();
         int page = 0;
         loadData(page);
@@ -157,12 +160,16 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Log.d("DEBUG", articleJsonResults.toString());
+
+                    Type collectionType = new TypeToken<List<ArticleGSON>>(){}.getType();
                     Gson gson = new GsonBuilder().create();
-                    articles = gson.fromJson(articleJsonResults.toString(), ArticlesList.class);
-//                    articles.addAll(ArticleGSON.fromJsonArray(articleJsonResults));
+                    articles = gson.fromJson(articleJsonResults.toString(), collectionType);
+//                  articles.addAll(ArticleGSON.fromJsonArray(articleJsonResults));
+
 
                     int currentAdapterSize = articleAdapter.getItemCount();
-                    articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.size() - currentAdapterSize);
+                    articleAdapter.notifyDataSetChanged();
+                    //articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.articlesList.size() - currentAdapterSize);
                     if(articles.size() == 0) {
                         Toast.makeText(SearchActivity.this, "try another search", Toast.LENGTH_SHORT).show();
                     }

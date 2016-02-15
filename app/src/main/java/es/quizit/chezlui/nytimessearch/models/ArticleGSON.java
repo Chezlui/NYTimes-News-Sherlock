@@ -50,32 +50,4 @@ public class ArticleGSON {
 //
 //        return articles;
 //    }
-
-    @Parcel
-    public class Headline {
-
-        @SerializedName("main")
-        public String main;
-
-        /**
-         * No args constructor for use in serialization
-         */
-        public Headline() {
-        }
-    }
-
-    @Parcel
-    public class Multimedia {
-
-        @SerializedName("url")
-        public String url;
-
-        /**
-         * No args constructor for use in serialization
-         */
-        public Multimedia() {
-        }
-
-
-    }
 }
