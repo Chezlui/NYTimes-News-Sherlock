@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,11 +33,14 @@ import cz.msebera.android.httpclient.Header;
 import es.quizit.chezlui.nytimessearch.R;
 import es.quizit.chezlui.nytimessearch.Utility;
 import es.quizit.chezlui.nytimessearch.adapters.ArticleRecyclerAdapter;
+import es.quizit.chezlui.nytimessearch.adapters.DividerItemDecoration;
 import es.quizit.chezlui.nytimessearch.adapters.EndlessRecyclerViewScrollListener;
 import es.quizit.chezlui.nytimessearch.adapters.ItemClickSupport;
 import es.quizit.chezlui.nytimessearch.models.Article;
 import es.quizit.chezlui.nytimessearch.models.Filter;
 
+// TODO add animation to RecyclerView
+// TODO Add place holder
 public class SearchActivity extends AppCompatActivity {
     @Bind(R.id.rvResults) RecyclerView rvResults;
 
@@ -58,6 +61,8 @@ public class SearchActivity extends AppCompatActivity {
 
 
         rvResults.setAdapter(articleAdapter);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        rvResults.addItemDecoration(itemDecoration);
 
         ItemClickSupport.addTo(rvResults).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
@@ -70,9 +75,10 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 }
         );
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        rvResults.setLayoutManager(gridLayoutManager);
-        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        rvResults.setLayoutManager(staggeredGridLayoutManager);
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(staggeredGridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 loadData(page);

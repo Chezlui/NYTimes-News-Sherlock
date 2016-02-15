@@ -30,7 +30,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 
         if(convertView == null)  {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.item_article_result, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_article_with_image_result, parent, false);
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.ivImage);

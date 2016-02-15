@@ -41,6 +41,8 @@ public class Article implements Serializable {
                 this.thumbnail = multimedia.getJSONObject(0).has("url") ?
                         "http://www.nytimes.com/" + multimedia.getJSONObject(0).getString("url")
                         : "";
+            } else {
+                this.thumbnail = "";
             }
 
 
