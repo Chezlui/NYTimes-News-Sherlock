@@ -176,8 +176,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-                    articleAdapter.notifyDataSetChanged();
-                    //articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.articlesList.size() - currentAdapterSize);
+                    articleAdapter.notifyItemRangeChanged(currentAdapterSize, articles.size() - currentAdapterSize);
                     if(articles.size() == 0) {
                         Toast.makeText(SearchActivity.this, "try another search", Toast.LENGTH_SHORT).show();
                     }

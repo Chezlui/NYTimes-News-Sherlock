@@ -30,7 +30,7 @@ public class ArticleGSON {
 
     public String getThumbnail() {
         if (multimedia.size() > 0) {
-            return ("http://www.nytimes.com/" +  multimedia.get(0).url);
+            return ("http://www.nytimes.com/" +  multimedia.get(1).url);
         } else {
             return "";
         }
